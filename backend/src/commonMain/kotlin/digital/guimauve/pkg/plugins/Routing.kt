@@ -1,6 +1,5 @@
 package digital.guimauve.pkg.plugins
 
-import dev.kaccelero.routers.OpenAPIRouter
 import dev.kaccelero.routers.createRoutes
 import dev.kaccelero.routers.info
 import digital.guimauve.pkg.controllers.organizations.OrganizationsRouter
@@ -46,10 +45,10 @@ fun Application.configureRouting() {
                 get<UsersRouter>(),
                 get<MavenRouter>(),
             ).forEach {
-                it.createRoutes(this, openAPI)
+                it.createRoutes(this) //, openAPI)
             }
         }
-        OpenAPIRouter().createRoutes(this, openAPI)
+        //OpenAPIRouter().createRoutes(this, openAPI)
 
         staticResources("", "static")
     }

@@ -38,6 +38,12 @@ import digital.guimauve.pkg.models.users.User
 import digital.guimauve.pkg.services.jwt.IJWTService
 import digital.guimauve.pkg.services.jwt.JWTService
 import digital.guimauve.pkg.usecases.auth.*
+import digital.guimauve.pkg.usecases.packages.GetPackageByNameUseCase
+import digital.guimauve.pkg.usecases.packages.GetPackageVersionByNameUseCase
+import digital.guimauve.pkg.usecases.packages.IGetPackageByNameUseCase
+import digital.guimauve.pkg.usecases.packages.IGetPackageVersionByNameUseCase
+import digital.guimauve.pkg.usecases.packages.maven.IParseMavenPathUseCase
+import digital.guimauve.pkg.usecases.packages.maven.ParseMavenPathUseCase
 import digital.guimauve.pkg.usecases.users.*
 import io.ktor.server.application.*
 import org.koin.core.qualifier.named
@@ -112,6 +118,13 @@ fun Application.configureKoin() {
             single<IGetUserForCallUseCase> { GetUserForCallUseCase(get(), get(), get()) }
             single<IGetUserForRefreshTokenUseCase> { GetUserForRefreshTokenUseCase(get(), get()) }
             single<IRequireUserForCallUseCase> { RequireUserForCallUseCase(get()) }
+
+            // Packages
+            single<IGetPackageByNameUseCase> { GetPackageByNameUseCase(get()) }
+            single<IGetPackageVersionByNameUseCase> { GetPackageVersionByNameUseCase(get()) }
+
+            // Maven
+            single<IParseMavenPathUseCase> { ParseMavenPathUseCase() }
         }
         val controllerModule = module {
             single<IOrganizationsController> {
@@ -126,7 +139,7 @@ fun Application.configureKoin() {
                     get(named<User>())
                 )
             }
-            single<IMavenController> { MavenController() }
+            single<IMavenController> { MavenController(get(), get(), get()) }
         }
         val routerModule = module {
             single { OrganizationsRouter(get()) }

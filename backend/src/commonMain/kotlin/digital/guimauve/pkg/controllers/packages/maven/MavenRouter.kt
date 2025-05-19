@@ -7,6 +7,6 @@ class MavenRouter(
 ) : APIUnitRouter(
     controller,
     IMavenController::class,
-    route = "maven",
+    route = "maven2",
     prefix = "/"
 )
