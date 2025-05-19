@@ -4,6 +4,8 @@ import dev.kaccelero.routers.createRoutes
 import dev.kaccelero.routers.info
 import digital.guimauve.pkg.controllers.organizations.OrganizationsRouter
 import digital.guimauve.pkg.controllers.packages.maven.MavenRouter
+import digital.guimauve.pkg.controllers.packages.npm.NpmRouter
+import digital.guimauve.pkg.controllers.packages.pypi.PyPiRouter
 import digital.guimauve.pkg.controllers.users.UsersRouter
 import digital.guimauve.pkg.models.application.PkgEnvironment
 import io.ktor.http.*
@@ -44,6 +46,8 @@ fun Application.configureRouting() {
                 get<OrganizationsRouter>(),
                 get<UsersRouter>(),
                 get<MavenRouter>(),
+                get<NpmRouter>(),
+                get<PyPiRouter>(),
             ).forEach {
                 it.createRoutes(this) //, openAPI)
             }

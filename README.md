@@ -13,7 +13,7 @@ To download packages:
 ```kotlin
 repositories {
     maven {
-        url = uri("https://pkg.guimauve.digital/maven2")
+        url = uri("https://pkg.guimauve.digital/maven2") // Replace with your repository URL
     }
 }
 ```
@@ -38,11 +38,27 @@ Note: If you run this repository locally, you need to add `isAllowInsecureProtoc
 
 ### npm
 
-Coming soon
+In your `.npmrc`:
+
+```ini
+@organization-name:registry=https://pkg.guimauve.digital/npm/
+```
 
 ### pypi
 
-Coming soon
+In your `pip.conf` (to download packages):
+
+```ini
+[global]
+extra-index-url = https://pkg.guimauve.digital/pypi/simple
+```
+
+In your `~/.pypirc` (to publish packages):
+
+```ini
+[guimauve-digital]
+repository = https://pkg.guimauve.digital/pypi/
+```
 
 ## Deploy your instance
 

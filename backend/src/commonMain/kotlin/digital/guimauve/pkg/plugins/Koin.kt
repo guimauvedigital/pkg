@@ -17,6 +17,12 @@ import digital.guimauve.pkg.controllers.organizations.OrganizationsRouter
 import digital.guimauve.pkg.controllers.packages.maven.IMavenController
 import digital.guimauve.pkg.controllers.packages.maven.MavenController
 import digital.guimauve.pkg.controllers.packages.maven.MavenRouter
+import digital.guimauve.pkg.controllers.packages.npm.INpmController
+import digital.guimauve.pkg.controllers.packages.npm.NpmController
+import digital.guimauve.pkg.controllers.packages.npm.NpmRouter
+import digital.guimauve.pkg.controllers.packages.pypi.IPyPiController
+import digital.guimauve.pkg.controllers.packages.pypi.PyPiController
+import digital.guimauve.pkg.controllers.packages.pypi.PyPiRouter
 import digital.guimauve.pkg.controllers.users.IUsersController
 import digital.guimauve.pkg.controllers.users.UsersController
 import digital.guimauve.pkg.controllers.users.UsersRouter
@@ -139,12 +145,26 @@ fun Application.configureKoin() {
                     get(named<User>())
                 )
             }
-            single<IMavenController> { MavenController(get(), get(), get()) }
+            single<IMavenController> {
+                MavenController(
+                    get(),
+                    get(),
+                    get()
+                )
+            }
+            single<INpmController> {
+                NpmController()
+            }
+            single<IPyPiController> {
+                PyPiController()
+            }
         }
         val routerModule = module {
             single { OrganizationsRouter(get()) }
             single { UsersRouter(get(), get()) }
             single { MavenRouter(get()) }
+            single { NpmRouter(get()) }
+            single { PyPiRouter(get()) }
         }
 
         modules(
