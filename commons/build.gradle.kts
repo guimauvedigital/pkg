@@ -99,12 +99,6 @@ kotlin {
     }
 }
 
-kotlinjsfix {
-    flattenCjsExports = true
-    exportJsInterfaces = true
-    removeDoNotUseOrImplementIt = true
-}
-
 zodable {
     packageName = "@guimauvedigital/pkg"
 }
