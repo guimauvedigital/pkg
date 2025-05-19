@@ -4,8 +4,6 @@ plugins {
     alias(libs.plugins.kover)
     alias(libs.plugins.ksp)
     alias(libs.plugins.maven)
-    alias(libs.plugins.npm)
-    alias(libs.plugins.kotlinjsfix)
     alias(libs.plugins.zodable)
 }
 

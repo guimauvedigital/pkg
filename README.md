@@ -8,6 +8,18 @@ An open source maven/npm/pypi package manager.
 
 ### Gradle
 
+To download packages:
+
+```kotlin
+repositories {
+    maven {
+        url = uri("https://pkg.guimauve.digital/maven2")
+    }
+}
+```
+
+To publish packages:
+
 ```kotlin
 // With com.vanniktech.maven.publish plugin
 mavenPublishing {

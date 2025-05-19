@@ -19,8 +19,6 @@ dependencyResolutionManagement {
             plugin("kover", "org.jetbrains.kotlinx.kover").version("0.8.3")
             plugin("ksp", "com.google.devtools.ksp").version("2.1.10-1.0.30")
             plugin("maven", "com.vanniktech.maven.publish").version("0.30.0")
-            plugin("npm", "dev.petuska.npm.publish").version("3.4.1")
-            plugin("kotlinjsfix", "me.nathanfallet.kotlinjsfix").version("1.0.1")
             plugin("zodable", "digital.guimauve.zodable").version("1.3.1")
 
             // Kaccelero
