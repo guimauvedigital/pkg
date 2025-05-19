@@ -1,0 +1,9 @@
+package digital.guimauve.pkg.database.packages.versions.files
+
+import dev.kaccelero.models.UUID
+import dev.kaccelero.repositories.IChildModelSuspendRepository
+import digital.guimauve.pkg.models.packages.versions.files.CreatePackageVersionFilePayload
+import digital.guimauve.pkg.models.packages.versions.files.PackageVersionFile
+
+interface IPackageVersionFilesRepository :
+    IChildModelSuspendRepository<PackageVersionFile, UUID, CreatePackageVersionFilePayload, Unit, UUID>

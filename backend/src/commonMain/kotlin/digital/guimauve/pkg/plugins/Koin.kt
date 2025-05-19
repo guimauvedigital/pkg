@@ -23,6 +23,12 @@ import digital.guimauve.pkg.controllers.users.UsersRouter
 import digital.guimauve.pkg.database.Database
 import digital.guimauve.pkg.database.organizations.IOrganizationsRepository
 import digital.guimauve.pkg.database.organizations.OrganizationDatabaseRepository
+import digital.guimauve.pkg.database.packages.IPackagesRepository
+import digital.guimauve.pkg.database.packages.PackagesDatabaseRepository
+import digital.guimauve.pkg.database.packages.versions.IPackageVersionsRepository
+import digital.guimauve.pkg.database.packages.versions.PackageVersionsDatabaseRepository
+import digital.guimauve.pkg.database.packages.versions.files.IPackageVersionFilesRepository
+import digital.guimauve.pkg.database.packages.versions.files.PackageVersionFilesDatabaseRepository
 import digital.guimauve.pkg.database.users.IUsersRepository
 import digital.guimauve.pkg.database.users.UsersDatabaseRepository
 import digital.guimauve.pkg.models.organizations.CreateOrganizationPayload
@@ -63,6 +69,9 @@ fun Application.configureKoin() {
         val repositoryModule = module {
             single<IOrganizationsRepository> { OrganizationDatabaseRepository(get()) }
             single<IUsersRepository> { UsersDatabaseRepository(get()) }
+            single<IPackagesRepository> { PackagesDatabaseRepository(get()) }
+            single<IPackageVersionsRepository> { PackageVersionsDatabaseRepository(get()) }
+            single<IPackageVersionFilesRepository> { PackageVersionFilesDatabaseRepository(get()) }
         }
         val useCaseModule = module {
             // Application
