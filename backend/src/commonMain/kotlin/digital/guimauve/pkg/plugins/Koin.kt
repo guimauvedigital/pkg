@@ -153,7 +153,10 @@ fun Application.configureKoin() {
                 )
             }
             single<INpmController> {
-                NpmController()
+                NpmController(
+                    get(),
+                    get(),
+                )
             }
             single<IPyPiController> {
                 PyPiController()
