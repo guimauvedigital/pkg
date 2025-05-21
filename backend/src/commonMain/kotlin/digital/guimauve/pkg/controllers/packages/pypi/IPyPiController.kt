@@ -17,7 +17,7 @@ interface IPyPiController : IUnitController {
 
     @TemplateMapping("pypi/package.ftl")
     @Path("GET", "/simple/{packageName}")
-    suspend fun packageInfo(@PathParameter packageName: String): Map<String, Any>
+    suspend fun packageInfo(call: ApplicationCall, @PathParameter packageName: String): Map<String, Any>
 
     @APIMapping
     @Path("POST", "/")

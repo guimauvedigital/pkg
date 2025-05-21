@@ -5,4 +5,4 @@ import digital.guimauve.pkg.models.packages.Package
 import digital.guimauve.pkg.models.packages.PackageFormat
 import digital.guimauve.pkg.models.users.User
 
-interface IGetPackageByNameUseCase : ITripleSuspendUseCase<String, PackageFormat, User?, Package?>
+interface IGetOrCreatePackageUseCase : ITripleSuspendUseCase<String, PackageFormat, User, Package?>

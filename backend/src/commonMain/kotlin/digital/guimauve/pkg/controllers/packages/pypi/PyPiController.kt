@@ -1,8 +1,12 @@
 package digital.guimauve.pkg.controllers.packages.pypi
 
 import dev.kaccelero.commons.exceptions.ControllerException
+import dev.kaccelero.commons.users.IGetUserForCallUseCase
+import dev.kaccelero.commons.users.IRequireUserForCallUseCase
 import digital.guimauve.pkg.models.packages.PackageFormat
 import digital.guimauve.pkg.models.packages.versions.files.PackageVersionFile
+import digital.guimauve.pkg.models.users.User
+import digital.guimauve.pkg.usecases.packages.IGetOrCreatePackageUseCase
 import digital.guimauve.pkg.usecases.packages.IGetPackageByNameUseCase
 import io.ktor.http.*
 import io.ktor.http.content.*
@@ -10,7 +14,10 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 
 class PyPiController(
+    private val getUserUseCase: IGetUserForCallUseCase,
+    private val requireUserUseCase: IRequireUserForCallUseCase,
     private val getPackageUseCase: IGetPackageByNameUseCase,
+    private val getOrCreatePackageUseCase: IGetOrCreatePackageUseCase,
 ) : IPyPiController {
 
     override suspend fun root(): Map<String, Any> {
@@ -20,8 +27,9 @@ class PyPiController(
         )
     }
 
-    override suspend fun packageInfo(packageName: String): Map<String, Any> {
-        val `package` = getPackageUseCase(packageName, PackageFormat.PYPI)
+    override suspend fun packageInfo(call: ApplicationCall, packageName: String): Map<String, Any> {
+        val user = getUserUseCase(call) as? User
+        val `package` = getPackageUseCase(packageName, PackageFormat.PYPI, user)
             ?: throw ControllerException(HttpStatusCode.NotFound, "packages_not_found")
         return mapOf(
             "package" to `package`,
@@ -30,6 +38,7 @@ class PyPiController(
     }
 
     override suspend fun upload(call: ApplicationCall) {
+        val user = requireUserUseCase(call) as User
         val t = call.receiveMultipart()
         t.forEachPart { part ->
             println(part.name)

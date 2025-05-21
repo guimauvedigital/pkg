@@ -12,4 +12,9 @@ data class MavenPath(
     val artifactId: String,
     val version: String?,
     val filename: String,
-)
+) {
+
+    val packageName: String
+        get() = "$groupId:$artifactId"
+
+}

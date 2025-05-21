@@ -1,4 +1,4 @@
-package digital.guimauve.pkg.usecases.packages
+package digital.guimauve.pkg.usecases.packages.versions
 
 import dev.kaccelero.models.UUID
 import digital.guimauve.pkg.database.packages.versions.IPackageVersionsRepository

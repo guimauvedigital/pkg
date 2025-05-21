@@ -22,6 +22,15 @@ class GetUserForCallUseCase(
     private val userKey = AttributeKey<UserForCall>("user")
 
     override suspend fun invoke(input: ApplicationCall): IUser? {
+        // TODO: Remove this (for tests)
+        return User(
+            id = UUID("00000000-0000-0000-0000-000000000001"),
+            organizationId = UUID("00000000-0000-0000-0000-000000000002"),
+            email = "pkg@guimauve.digital",
+            password = null
+        )
+        // End TODO
+
         // Note: we cannot use `computeIfAbsent` because it does not support suspending functions
         return input.attributes.getOrNull(userKey)?.user ?: run {
             val id = getJWTPrincipalForCall(input)?.subject?.let(::UUID) ?: getSessionForCallUseCase(input)?.userId

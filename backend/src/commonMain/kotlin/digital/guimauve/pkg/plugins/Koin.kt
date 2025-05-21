@@ -44,12 +44,14 @@ import digital.guimauve.pkg.models.users.User
 import digital.guimauve.pkg.services.jwt.IJWTService
 import digital.guimauve.pkg.services.jwt.JWTService
 import digital.guimauve.pkg.usecases.auth.*
+import digital.guimauve.pkg.usecases.packages.GetOrCreatePackageUseCase
 import digital.guimauve.pkg.usecases.packages.GetPackageByNameUseCase
-import digital.guimauve.pkg.usecases.packages.GetPackageVersionByNameUseCase
+import digital.guimauve.pkg.usecases.packages.IGetOrCreatePackageUseCase
 import digital.guimauve.pkg.usecases.packages.IGetPackageByNameUseCase
-import digital.guimauve.pkg.usecases.packages.IGetPackageVersionByNameUseCase
 import digital.guimauve.pkg.usecases.packages.maven.IParseMavenPathUseCase
 import digital.guimauve.pkg.usecases.packages.maven.ParseMavenPathUseCase
+import digital.guimauve.pkg.usecases.packages.versions.GetPackageVersionByNameUseCase
+import digital.guimauve.pkg.usecases.packages.versions.IGetPackageVersionByNameUseCase
 import digital.guimauve.pkg.usecases.users.*
 import io.ktor.server.application.*
 import org.koin.core.qualifier.named
@@ -127,6 +129,7 @@ fun Application.configureKoin() {
 
             // Packages
             single<IGetPackageByNameUseCase> { GetPackageByNameUseCase(get()) }
+            single<IGetOrCreatePackageUseCase> { GetOrCreatePackageUseCase(get()) }
             single<IGetPackageVersionByNameUseCase> { GetPackageVersionByNameUseCase(get()) }
 
             // Maven
@@ -149,18 +152,27 @@ fun Application.configureKoin() {
                 MavenController(
                     get(),
                     get(),
-                    get()
+                    get(),
+                    get(),
+                    get(),
+                    get(),
                 )
             }
             single<INpmController> {
                 NpmController(
                     get(),
                     get(),
+                    get(),
+                    get(),
+                    get(),
                 )
             }
             single<IPyPiController> {
                 PyPiController(
-                    get()
+                    get(),
+                    get(),
+                    get(),
+                    get(),
                 )
             }
         }

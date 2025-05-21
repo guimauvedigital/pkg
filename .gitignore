@@ -50,3 +50,6 @@ helm/*/charts
 
 ### JS ###
 yarn.lock
+
+### Local storage ###
+pkg_data/

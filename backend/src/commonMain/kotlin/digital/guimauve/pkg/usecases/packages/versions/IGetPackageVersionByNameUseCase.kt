@@ -1,4 +1,4 @@
-package digital.guimauve.pkg.usecases.packages
+package digital.guimauve.pkg.usecases.packages.versions
 
 import dev.kaccelero.models.UUID
 import dev.kaccelero.usecases.IPairSuspendUseCase
