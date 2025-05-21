@@ -18,6 +18,7 @@ import digital.guimauve.pkg.usecases.packages.versions.IGetLatestPackageVersionU
 import digital.guimauve.pkg.usecases.packages.versions.IGetOrCreatePackageVersionUseCase
 import digital.guimauve.pkg.usecases.packages.versions.IGetPackageVersionByNameUseCase
 import digital.guimauve.pkg.usecases.packages.versions.files.IDownloadFileUseCase
+import digital.guimauve.pkg.usecases.packages.versions.files.IGetLatestPackageVersionFileUseCase
 import digital.guimauve.pkg.usecases.packages.versions.files.IGetPackageVersionFileByNameUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -35,6 +36,7 @@ class MavenController(
     private val getOrCreatePackageVersionUseCase: IGetOrCreatePackageVersionUseCase,
     private val getLatestVersionUseCase: IGetLatestPackageVersionUseCase,
     private val getPackageVersionFileByNameUseCase: IGetPackageVersionFileByNameUseCase,
+    private val getLatestPackageVersionFileUseCase: IGetLatestPackageVersionFileUseCase,
     private val createPackageVersionFileUseCase: ICreateChildModelWithContextSuspendUseCase<PackageVersionFile, CreatePackageVersionFilePayload, UUID>,
     private val downloadFileUseCase: IDownloadFileUseCase,
 ) : IMavenController {
@@ -44,10 +46,12 @@ class MavenController(
         val mavenPath = parseMavenPathUseCase(call.parameters.getAll("path") ?: emptyList())
         val `package` = getPackageUseCase(mavenPath.packageName, PackageFormat.MAVEN, user)
             ?: throw ControllerException(HttpStatusCode.NotFound, "packages_not_found")
-        val version = mavenPath.version?.let { getPackageVersionUseCase(it, `package`.id) }
-            ?: getLatestVersionUseCase(`package`.id)
-            ?: throw ControllerException(HttpStatusCode.NotFound, "packages_versions_not_found")
-        val file = getPackageVersionFileByNameUseCase(mavenPath.filename, version.id)
+        val version = mavenPath.version?.let {
+            getPackageVersionUseCase(it, `package`.id)
+                ?: throw ControllerException(HttpStatusCode.NotFound, "packages_versions_not_found")
+        }
+        val file = version?.id?.let { getPackageVersionFileByNameUseCase(mavenPath.filename, version.id) }
+            ?: getLatestPackageVersionFileUseCase(mavenPath.filename, `package`.id)
             ?: throw ControllerException(HttpStatusCode.NotFound, "packages_versions_files_not_found")
         return downloadFileUseCase(file)
     }

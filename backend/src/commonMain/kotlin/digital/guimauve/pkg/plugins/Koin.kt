@@ -141,6 +141,7 @@ fun Application.configureKoin() {
             single<IGetOrCreatePackageVersionUseCase> { GetOrCreatePackageVersionUseCase(get()) }
             single<IGetLatestPackageVersionUseCase> { GetLatestPackageVersionUseCase(get()) }
             single<IGetPackageVersionFileByNameUseCase> { GetPackageVersionFileByNameUseCase(get()) }
+            single<IGetLatestPackageVersionFileUseCase> { GetLatestPackageVersionFileUseCase(get()) }
             single<ICreateChildModelWithContextSuspendUseCase<PackageVersionFile, CreatePackageVersionFilePayload, UUID>>(
                 named<PackageVersionFile>()
             ) {
@@ -166,6 +167,7 @@ fun Application.configureKoin() {
             }
             single<IMavenController> {
                 MavenController(
+                    get(),
                     get(),
                     get(),
                     get(),

@@ -9,5 +9,6 @@ interface IPackageVersionFilesRepository :
     IChildModelSuspendRepository<PackageVersionFile, UUID, CreatePackageVersionFilePayload, Unit, UUID> {
 
     suspend fun getByName(name: String, parentId: UUID): PackageVersionFile?
+    suspend fun getLatestByName(name: String, packageId: UUID): PackageVersionFile?
 
 }
