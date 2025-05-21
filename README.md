@@ -1,14 +1,20 @@
 # pkg
 
-An open source maven/npm/pypi package manager.
-
 [![License](https://img.shields.io/github/license/guimauvedigital/pkg)](LICENSE)
 [![Issues](https://img.shields.io/github/issues/guimauvedigital/pkg)]()
 [![Pull Requests](https://img.shields.io/github/issues-pr/guimauvedigital/pkg)]()
 [![Code Size](https://img.shields.io/github/languages/code-size/guimauvedigital/pkg)]()
 [![codecov](https://codecov.io/gh/guimauvedigital/pkg/graph/badge.svg?token=XZ7HrShgH3)](https://codecov.io/gh/guimauvedigital/pkg)
 
+An open source maven/npm/pypi package manager.
+
 > Warning: This is a work in progress and not ready for production use.
+
+## Motivation
+
+We wanted to publish our packages to import them between our projects easily. But we also wanted them to be private and
+not available to the public. Since GitHub does not support python packages, other solutions were very costly, and we
+love to make open source software, we decided to create our own package manager!
 
 ## Use in your code
 
