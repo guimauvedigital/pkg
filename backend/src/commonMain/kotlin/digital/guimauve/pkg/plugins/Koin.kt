@@ -159,7 +159,9 @@ fun Application.configureKoin() {
                 )
             }
             single<IPyPiController> {
-                PyPiController()
+                PyPiController(
+                    get()
+                )
             }
         }
         val routerModule = module {
