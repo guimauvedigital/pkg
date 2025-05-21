@@ -1,11 +1,16 @@
 package digital.guimauve.pkg.controllers.packages.maven
 
 import dev.kaccelero.commons.exceptions.ControllerException
+import dev.kaccelero.commons.repositories.ICreateChildModelWithContextSuspendUseCase
 import dev.kaccelero.commons.responses.BytesResponse
 import dev.kaccelero.commons.users.IGetUserForCallUseCase
 import dev.kaccelero.commons.users.IRequireUserForCallUseCase
+import dev.kaccelero.models.UUID
 import digital.guimauve.pkg.models.packages.PackageFormat
+import digital.guimauve.pkg.models.packages.versions.files.CreatePackageVersionFilePayload
+import digital.guimauve.pkg.models.packages.versions.files.PackageVersionFile
 import digital.guimauve.pkg.models.users.User
+import digital.guimauve.pkg.services.storage.FileContext
 import digital.guimauve.pkg.usecases.packages.IGetOrCreatePackageUseCase
 import digital.guimauve.pkg.usecases.packages.IGetPackageByNameUseCase
 import digital.guimauve.pkg.usecases.packages.maven.IParseMavenPathUseCase
@@ -14,6 +19,9 @@ import digital.guimauve.pkg.usecases.packages.versions.IGetOrCreatePackageVersio
 import digital.guimauve.pkg.usecases.packages.versions.IGetPackageVersionByNameUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.request.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class MavenController(
     private val getUserUseCase: IGetUserForCallUseCase,
@@ -24,6 +32,7 @@ class MavenController(
     private val getPackageVersionUseCase: IGetPackageVersionByNameUseCase,
     private val getOrCreatePackageVersionUseCase: IGetOrCreatePackageVersionUseCase,
     private val getLatestVersionUseCase: IGetLatestPackageVersionUseCase,
+    private val createPackageVersionFileUseCase: ICreateChildModelWithContextSuspendUseCase<PackageVersionFile, CreatePackageVersionFilePayload, UUID>,
 ) : IMavenController {
 
     override suspend fun get(call: ApplicationCall): BytesResponse {
@@ -40,7 +49,7 @@ class MavenController(
         )
     }
 
-    override suspend fun put(call: ApplicationCall) {
+    override suspend fun put(call: ApplicationCall): Unit = withContext(Dispatchers.IO) {
         val user = requireUserUseCase(call) as User
         val mavenPath = parseMavenPathUseCase(call.parameters.getAll("path") ?: emptyList())
         val `package` = getOrCreatePackageUseCase(mavenPath.packageName, PackageFormat.MAVEN, user)
@@ -49,6 +58,17 @@ class MavenController(
             ?: getLatestVersionUseCase(`package`.id)
             ?: throw ControllerException(HttpStatusCode.NotFound, "packages_versions_not_found")
 
+        val inputStream = call.receiveStream()
+        val contentType = call.request.contentType()
+        createPackageVersionFileUseCase(
+            CreatePackageVersionFilePayload(mavenPath.filename, `package`, version),
+            version.id,
+            FileContext(
+                inputStream,
+                contentType.takeIf { it != ContentType.Any } ?: ContentType.Application.OctetStream,
+                call.request.contentLength() ?: 0
+            )
+        ) ?: throw ControllerException(HttpStatusCode.BadRequest, "file_not_uploaded")
     }
 
 }

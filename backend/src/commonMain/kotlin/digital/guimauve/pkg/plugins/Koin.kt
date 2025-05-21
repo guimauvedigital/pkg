@@ -39,10 +39,14 @@ import digital.guimauve.pkg.database.users.IUsersRepository
 import digital.guimauve.pkg.database.users.UsersDatabaseRepository
 import digital.guimauve.pkg.models.organizations.CreateOrganizationPayload
 import digital.guimauve.pkg.models.organizations.Organization
+import digital.guimauve.pkg.models.packages.versions.files.CreatePackageVersionFilePayload
+import digital.guimauve.pkg.models.packages.versions.files.PackageVersionFile
 import digital.guimauve.pkg.models.users.CreateUserPayload
 import digital.guimauve.pkg.models.users.User
 import digital.guimauve.pkg.services.jwt.IJWTService
 import digital.guimauve.pkg.services.jwt.JWTService
+import digital.guimauve.pkg.services.storage.IStorageService
+import digital.guimauve.pkg.services.storage.LocalStorageService
 import digital.guimauve.pkg.usecases.auth.*
 import digital.guimauve.pkg.usecases.packages.GetOrCreatePackageUseCase
 import digital.guimauve.pkg.usecases.packages.GetPackageByNameUseCase
@@ -51,6 +55,7 @@ import digital.guimauve.pkg.usecases.packages.IGetPackageByNameUseCase
 import digital.guimauve.pkg.usecases.packages.maven.IParseMavenPathUseCase
 import digital.guimauve.pkg.usecases.packages.maven.ParseMavenPathUseCase
 import digital.guimauve.pkg.usecases.packages.versions.*
+import digital.guimauve.pkg.usecases.packages.versions.files.CreatePackageVersionFileUseCase
 import digital.guimauve.pkg.usecases.users.*
 import io.ktor.server.application.*
 import org.koin.core.qualifier.named
@@ -77,6 +82,9 @@ fun Application.configureKoin() {
                     environment.config.property("jwt.issuer").getString(),
                     environment.config.property("jwt.audience").getString()
                 )
+            }
+            single<IStorageService> {
+                LocalStorageService() // TODO: Proxy to local/s3 depending on env
             }
         }
         val repositoryModule = module {
@@ -132,6 +140,11 @@ fun Application.configureKoin() {
             single<IGetPackageVersionByNameUseCase> { GetPackageVersionByNameUseCase(get()) }
             single<IGetOrCreatePackageVersionUseCase> { GetOrCreatePackageVersionUseCase(get()) }
             single<IGetLatestPackageVersionUseCase> { GetLatestPackageVersionUseCase(get()) }
+            single<ICreateChildModelWithContextSuspendUseCase<PackageVersionFile, CreatePackageVersionFilePayload, UUID>>(
+                named<PackageVersionFile>()
+            ) {
+                CreatePackageVersionFileUseCase(get(), get())
+            }
 
             // Maven
             single<IParseMavenPathUseCase> { ParseMavenPathUseCase() }
@@ -159,6 +172,7 @@ fun Application.configureKoin() {
                     get(),
                     get(),
                     get(),
+                    get(named<PackageVersionFile>()),
                 )
             }
             single<INpmController> {
