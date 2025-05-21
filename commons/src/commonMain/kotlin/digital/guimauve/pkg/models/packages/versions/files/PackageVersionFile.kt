@@ -15,11 +15,7 @@ data class PackageVersionFile(
     val name: String,
     val contentType: String,
     val size: Long,
-    val sha1: String,
-    val sha256: String,
-    val sha512: String,
     val path: String,
-    val signature: String?,
 ) : IChildModel<UUID, CreatePackageVersionFilePayload, Unit, UUID> {
 
     override val parentId: UUID

@@ -11,11 +11,7 @@ object PackageVersionFiles : UUIDTable() {
     val name = varchar("name", 255)
     val contentType = varchar("content_type", 255)
     val size = long("size")
-    val sha1 = varchar("sha1", 255)
-    val sha256 = varchar("sha256", 255)
-    val sha512 = varchar("sha512", 255)
     val path = varchar("path", 255)
-    val signature = varchar("signature", 255).nullable()
 
     init {
         uniqueIndex(versionId, name)
@@ -29,11 +25,7 @@ object PackageVersionFiles : UUIDTable() {
         row[name],
         row[contentType],
         row[size],
-        row[sha1],
-        row[sha256],
-        row[sha512],
         row[path],
-        row[signature],
     )
 
 }

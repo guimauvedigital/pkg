@@ -55,9 +55,6 @@ class PackageVersionFilesDatabaseRepository(
                 it[path] = payload.path
                 it[contentType] = fileContext.contentType.toString()
                 it[size] = fileContext.contentLength
-                it[sha1] = ""
-                it[sha256] = ""
-                it[sha512] = ""
             }
         }.resultedValues?.map(PackageVersionFiles::toPackageVersionFile)?.singleOrNull()
     }
