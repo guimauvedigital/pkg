@@ -16,7 +16,7 @@ data class PackageVersion(
     val version: String,
     val publishedBy: UUID,
     val publishedAt: Instant,
-    val metadata: String,
+    val metadata: String?,
     val yanked: Boolean,
 ) : IChildModel<UUID, CreatePackageVersionPayload, Unit, UUID> {
 

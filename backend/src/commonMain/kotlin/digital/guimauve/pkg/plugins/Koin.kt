@@ -50,8 +50,7 @@ import digital.guimauve.pkg.usecases.packages.IGetOrCreatePackageUseCase
 import digital.guimauve.pkg.usecases.packages.IGetPackageByNameUseCase
 import digital.guimauve.pkg.usecases.packages.maven.IParseMavenPathUseCase
 import digital.guimauve.pkg.usecases.packages.maven.ParseMavenPathUseCase
-import digital.guimauve.pkg.usecases.packages.versions.GetPackageVersionByNameUseCase
-import digital.guimauve.pkg.usecases.packages.versions.IGetPackageVersionByNameUseCase
+import digital.guimauve.pkg.usecases.packages.versions.*
 import digital.guimauve.pkg.usecases.users.*
 import io.ktor.server.application.*
 import org.koin.core.qualifier.named
@@ -131,6 +130,8 @@ fun Application.configureKoin() {
             single<IGetPackageByNameUseCase> { GetPackageByNameUseCase(get()) }
             single<IGetOrCreatePackageUseCase> { GetOrCreatePackageUseCase(get()) }
             single<IGetPackageVersionByNameUseCase> { GetPackageVersionByNameUseCase(get()) }
+            single<IGetOrCreatePackageVersionUseCase> { GetOrCreatePackageVersionUseCase(get()) }
+            single<IGetLatestPackageVersionUseCase> { GetLatestPackageVersionUseCase(get()) }
 
             // Maven
             single<IParseMavenPathUseCase> { ParseMavenPathUseCase() }
@@ -150,6 +151,8 @@ fun Application.configureKoin() {
             }
             single<IMavenController> {
                 MavenController(
+                    get(),
+                    get(),
                     get(),
                     get(),
                     get(),

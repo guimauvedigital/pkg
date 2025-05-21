@@ -9,5 +9,5 @@ import kotlin.js.JsExport
 @Serializable
 data class CreatePackageVersionPayload(
     val version: String,
-    val metadata: String,
+    val metadata: String?,
 )

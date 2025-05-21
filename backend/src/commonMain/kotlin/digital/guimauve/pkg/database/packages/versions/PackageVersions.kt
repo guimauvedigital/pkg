@@ -12,7 +12,7 @@ object PackageVersions : UUIDTable() {
     val version = varchar("version", 255)
     val publishedBy = uuid("published_by")
     val publishedAt = timestamp("published_at")
-    val metadata = text("metadata")
+    val metadata = text("metadata").nullable()
     val yanked = bool("yanked").default(false)
 
     init {

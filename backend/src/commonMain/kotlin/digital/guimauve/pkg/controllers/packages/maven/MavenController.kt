@@ -9,6 +9,8 @@ import digital.guimauve.pkg.models.users.User
 import digital.guimauve.pkg.usecases.packages.IGetOrCreatePackageUseCase
 import digital.guimauve.pkg.usecases.packages.IGetPackageByNameUseCase
 import digital.guimauve.pkg.usecases.packages.maven.IParseMavenPathUseCase
+import digital.guimauve.pkg.usecases.packages.versions.IGetLatestPackageVersionUseCase
+import digital.guimauve.pkg.usecases.packages.versions.IGetOrCreatePackageVersionUseCase
 import digital.guimauve.pkg.usecases.packages.versions.IGetPackageVersionByNameUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -20,6 +22,8 @@ class MavenController(
     private val getPackageUseCase: IGetPackageByNameUseCase,
     private val getOrCreatePackageUseCase: IGetOrCreatePackageUseCase,
     private val getPackageVersionUseCase: IGetPackageVersionByNameUseCase,
+    private val getOrCreatePackageVersionUseCase: IGetOrCreatePackageVersionUseCase,
+    private val getLatestVersionUseCase: IGetLatestPackageVersionUseCase,
 ) : IMavenController {
 
     override suspend fun get(call: ApplicationCall): BytesResponse {
@@ -28,6 +32,8 @@ class MavenController(
         val `package` = getPackageUseCase(mavenPath.packageName, PackageFormat.MAVEN, user)
             ?: throw ControllerException(HttpStatusCode.NotFound, "packages_not_found")
         val version = mavenPath.version?.let { getPackageVersionUseCase(it, `package`.id) }
+            ?: getLatestVersionUseCase(`package`.id)
+            ?: throw ControllerException(HttpStatusCode.NotFound, "packages_versions_not_found")
         return BytesResponse(
             bytes = ByteArray(0),
             contentType = ContentType.Application.Xml
@@ -39,6 +45,10 @@ class MavenController(
         val mavenPath = parseMavenPathUseCase(call.parameters.getAll("path") ?: emptyList())
         val `package` = getOrCreatePackageUseCase(mavenPath.packageName, PackageFormat.MAVEN, user)
             ?: throw ControllerException(HttpStatusCode.NotFound, "packages_not_found")
+        val version = mavenPath.version?.let { getOrCreatePackageVersionUseCase(it, `package`.id, user) }
+            ?: getLatestVersionUseCase(`package`.id)
+            ?: throw ControllerException(HttpStatusCode.NotFound, "packages_versions_not_found")
+
     }
 
 }
