@@ -55,7 +55,7 @@ import digital.guimauve.pkg.usecases.packages.IGetPackageByNameUseCase
 import digital.guimauve.pkg.usecases.packages.maven.IParseMavenPathUseCase
 import digital.guimauve.pkg.usecases.packages.maven.ParseMavenPathUseCase
 import digital.guimauve.pkg.usecases.packages.versions.*
-import digital.guimauve.pkg.usecases.packages.versions.files.CreatePackageVersionFileUseCase
+import digital.guimauve.pkg.usecases.packages.versions.files.*
 import digital.guimauve.pkg.usecases.users.*
 import io.ktor.server.application.*
 import org.koin.core.qualifier.named
@@ -140,11 +140,13 @@ fun Application.configureKoin() {
             single<IGetPackageVersionByNameUseCase> { GetPackageVersionByNameUseCase(get()) }
             single<IGetOrCreatePackageVersionUseCase> { GetOrCreatePackageVersionUseCase(get()) }
             single<IGetLatestPackageVersionUseCase> { GetLatestPackageVersionUseCase(get()) }
+            single<IGetPackageVersionFileByNameUseCase> { GetPackageVersionFileByNameUseCase(get()) }
             single<ICreateChildModelWithContextSuspendUseCase<PackageVersionFile, CreatePackageVersionFilePayload, UUID>>(
                 named<PackageVersionFile>()
             ) {
                 CreatePackageVersionFileUseCase(get(), get())
             }
+            single<IDownloadFileUseCase> { DownloadFileUseCase(get()) }
 
             // Maven
             single<IParseMavenPathUseCase> { ParseMavenPathUseCase() }
@@ -172,7 +174,9 @@ fun Application.configureKoin() {
                     get(),
                     get(),
                     get(),
+                    get(),
                     get(named<PackageVersionFile>()),
+                    get(),
                 )
             }
             single<INpmController> {

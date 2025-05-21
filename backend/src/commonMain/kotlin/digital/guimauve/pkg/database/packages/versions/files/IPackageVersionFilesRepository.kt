@@ -6,4 +6,8 @@ import digital.guimauve.pkg.models.packages.versions.files.CreatePackageVersionF
 import digital.guimauve.pkg.models.packages.versions.files.PackageVersionFile
 
 interface IPackageVersionFilesRepository :
-    IChildModelSuspendRepository<PackageVersionFile, UUID, CreatePackageVersionFilePayload, Unit, UUID>
+    IChildModelSuspendRepository<PackageVersionFile, UUID, CreatePackageVersionFilePayload, Unit, UUID> {
+
+    suspend fun getByName(name: String, parentId: UUID): PackageVersionFile?
+
+}
