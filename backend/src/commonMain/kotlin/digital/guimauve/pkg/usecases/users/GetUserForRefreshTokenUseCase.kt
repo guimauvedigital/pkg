@@ -2,7 +2,7 @@ package digital.guimauve.pkg.usecases.users
 
 import dev.kaccelero.models.UUID
 import digital.guimauve.pkg.models.users.User
-import digital.guimauve.pkg.services.jwt.IJWTService
+import digital.guimauve.pkg.services.tokens.IJWTService
 
 class GetUserForRefreshTokenUseCase(
     private val jwtService: IJWTService,

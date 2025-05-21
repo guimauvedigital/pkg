@@ -1,4 +1,4 @@
-package digital.guimauve.pkg.services.jwt
+package digital.guimauve.pkg.services.tokens
 
 import com.auth0.jwt.interfaces.DecodedJWT
 import com.auth0.jwt.interfaces.JWTVerifier

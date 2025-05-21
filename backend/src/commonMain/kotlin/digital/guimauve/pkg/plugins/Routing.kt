@@ -10,6 +10,7 @@ import digital.guimauve.pkg.controllers.users.UsersRouter
 import digital.guimauve.pkg.models.application.PkgEnvironment
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.http.content.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
@@ -40,17 +41,29 @@ fun Application.configureRouting() {
             )
         )
 
-        //authenticate("api-jwt", optional = true) {
-        listOf(
-            get<OrganizationsRouter>(),
-            get<UsersRouter>(),
-            get<MavenRouter>(),
-            get<NpmRouter>(),
-            get<PyPiRouter>(),
-        ).forEach {
-            it.createRoutes(this) //, openAPI)
+        authenticate("api-jwt", optional = true) {
+            listOf(
+                get<OrganizationsRouter>(),
+                get<UsersRouter>(),
+            ).forEach {
+                it.createRoutes(this) //, openAPI)
+            }
         }
-        //}
+        authenticate("auth-basic", optional = true) {
+            listOf(
+                get<MavenRouter>(),
+                get<PyPiRouter>(),
+            ).forEach {
+                it.createRoutes(this) //, openAPI)
+            }
+        }
+        authenticate("auth-bearer", optional = true) {
+            listOf(
+                get<NpmRouter>(),
+            ).forEach {
+                it.createRoutes(this) //, openAPI)
+            }
+        }
         //OpenAPIRouter().createRoutes(this, openAPI)
 
         staticResources("", "static")

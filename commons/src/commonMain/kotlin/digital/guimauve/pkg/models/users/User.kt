@@ -27,4 +27,10 @@ data class User(
     override val parentId: UUID
         get() = organizationId
 
+    companion object {
+
+        const val EMAIL_REGEX = "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"
+
+    }
+
 }

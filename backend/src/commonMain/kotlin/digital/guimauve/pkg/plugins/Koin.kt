@@ -43,10 +43,12 @@ import digital.guimauve.pkg.models.packages.versions.files.CreatePackageVersionF
 import digital.guimauve.pkg.models.packages.versions.files.PackageVersionFile
 import digital.guimauve.pkg.models.users.CreateUserPayload
 import digital.guimauve.pkg.models.users.User
-import digital.guimauve.pkg.services.jwt.IJWTService
-import digital.guimauve.pkg.services.jwt.JWTService
 import digital.guimauve.pkg.services.storage.IStorageService
 import digital.guimauve.pkg.services.storage.LocalStorageService
+import digital.guimauve.pkg.services.tokens.IJWTService
+import digital.guimauve.pkg.services.tokens.ITokensService
+import digital.guimauve.pkg.services.tokens.JWTService
+import digital.guimauve.pkg.services.tokens.TokensService
 import digital.guimauve.pkg.usecases.auth.*
 import digital.guimauve.pkg.usecases.packages.GetOrCreatePackageUseCase
 import digital.guimauve.pkg.usecases.packages.GetPackageByNameUseCase
@@ -83,6 +85,9 @@ fun Application.configureKoin() {
                     environment.config.property("jwt.audience").getString()
                 )
             }
+            single<ITokensService> {
+                TokensService(get())
+            }
             single<IStorageService> {
                 LocalStorageService() // TODO: Proxy to local/s3 depending on env
             }
@@ -99,6 +104,7 @@ fun Application.configureKoin() {
             single<ITranslateUseCase> { TranslateFromPropertiesUseCase() }
             single<IGetLocaleForCallUseCase> { GetLocaleForCallUseCase() }
             single<IGetJWTPrincipalForCallUseCase> { GetJWTPrincipalForCallUseCase() }
+            single<IGetUserIdPrincipalUseCase> { GetUserIdPrincipalUseCase() }
 
             // Auth
             single<IHashPasswordUseCase> { HashPasswordUseCase() }
@@ -106,6 +112,7 @@ fun Application.configureKoin() {
             single<IGetSessionForCallUseCase> { GetSessionForCallUseCase() }
             single<ISetSessionForCallUseCase> { SetSessionForCallUseCase() }
             single<IClearSessionForCallUseCase> { ClearSessionForCallUseCase() }
+            single<ILoginUseCase> { LoginUseCase(get(), get()) }
 
             // Organizations
             single<IListModelSuspendUseCase<Organization>>(named<Organization>()) {
@@ -130,7 +137,7 @@ fun Application.configureKoin() {
             }
             single<IGetUserUseCase> { GetUserUseCase(get()) }
             single<IGetUserForEmailUseCase> { GetUserForEmailUseCase(get()) }
-            single<IGetUserForCallUseCase> { GetUserForCallUseCase(get(), get(), get()) }
+            single<IGetUserForCallUseCase> { GetUserForCallUseCase(get(), get(), get(), get()) }
             single<IGetUserForRefreshTokenUseCase> { GetUserForRefreshTokenUseCase(get(), get()) }
             single<IRequireUserForCallUseCase> { RequireUserForCallUseCase(get()) }
 
