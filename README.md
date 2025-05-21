@@ -2,6 +2,12 @@
 
 An open source maven/npm/pypi package manager.
 
+[![License](https://img.shields.io/github/license/guimauvedigital/pkg)](LICENSE)
+[![Issues](https://img.shields.io/github/issues/guimauvedigital/pkg)]()
+[![Pull Requests](https://img.shields.io/github/issues-pr/guimauvedigital/pkg)]()
+[![Code Size](https://img.shields.io/github/languages/code-size/guimauvedigital/pkg)]()
+[![codecov](https://codecov.io/gh/guimauvedigital/pkg/graph/badge.svg?token=XZ7HrShgH3)](https://codecov.io/gh/guimauvedigital/pkg)
+
 > Warning: This is a work in progress and not ready for production use.
 
 ## Use in your code
