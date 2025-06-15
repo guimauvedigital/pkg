@@ -27,8 +27,8 @@ repositories {
     maven {
         url = uri("https://pkg.guimauve.digital/maven2") // Replace with your repository URL
         credentials {
-            username = findProperty("guimauveUsername") as String?
-            password = findProperty("guimauvePassword") as String?
+            username = findProperty("pkgUsername") as String?
+            password = findProperty("pkgPassword") as String?
         }
     }
 }
@@ -42,15 +42,27 @@ mavenPublishing {
     publishing {
         repositories {
             maven {
-                name = "guimauveDigital" // Replace with your repository name
+                name = "pkg" // Replace with your repository name
                 url = uri("https://pkg.guimauve.digital/maven2") // Replace with your repository URL
                 credentials {
-                    username = findProperty("guimauveUsername") as String?
-                    password = findProperty("guimauvePassword") as String?
+                    username = findProperty("pkgUsername") as String?
+                    password = findProperty("pkgPassword") as String?
                 }
             }
         }
     }
+}
+```
+
+Or using the gradle plugin:
+
+```kotlin
+plugins {
+    id("digital.guimauve.pkg") version "0.1.0"
+}
+
+repositories {
+    pkgRepo(project)
 }
 ```
 

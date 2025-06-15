@@ -125,5 +125,6 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "pkg"
+includeBuild("gradle-plugin")
 include(":commons")
 include(":backend")
