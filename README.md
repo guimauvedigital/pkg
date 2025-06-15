@@ -26,6 +26,10 @@ To download packages:
 repositories {
     maven {
         url = uri("https://pkg.guimauve.digital/maven2") // Replace with your repository URL
+        credentials {
+            username = findProperty("guimauveUsername") as String?
+            password = findProperty("guimauvePassword") as String?
+        }
     }
 }
 ```
@@ -40,6 +44,10 @@ mavenPublishing {
             maven {
                 name = "guimauveDigital" // Replace with your repository name
                 url = uri("https://pkg.guimauve.digital/maven2") // Replace with your repository URL
+                credentials {
+                    username = findProperty("guimauveUsername") as String?
+                    password = findProperty("guimauvePassword") as String?
+                }
             }
         }
     }
