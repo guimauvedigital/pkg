@@ -27,7 +27,7 @@ gradlePlugin {
             implementationClass = "digital.guimauve.pkg.PKGPlugin"
             displayName = "PKG Gradle Plugin"
             description = "Simply configure your custom repository on every project."
-            tags = listOf("maven", "gradle", "repository", "guimauve")
+            tags = listOf("maven", "repository", "guimauve")
         }
     }
 }
