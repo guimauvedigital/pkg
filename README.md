@@ -62,7 +62,7 @@ plugins {
 }
 
 repositories {
-    pkgRepo(project)
+    pkg(project)
 }
 ```
 

@@ -1,7 +1,7 @@
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 
-fun RepositoryHandler.pkgRepo(
+fun RepositoryHandler.pkg(
     project: Project,
     name: String = "pkg",
     url: String = "https://pkg.guimauve.digital/maven2",
