@@ -107,7 +107,7 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
   tls:
-    - secretName: guimauve-tls
+    - secretName: guimauvedigital-tls
       hosts:
         - pkg.guimauve.digital
 jwt:
