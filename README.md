@@ -74,4 +74,35 @@ repository = https://pkg.guimauve.digital/pypi/
 
 ## Deploy your instance
 
-Coming soon
+The easiest way to deploy an instance is using Helm on Kubernetes.
+
+Create a `values.yaml` file with the following content (replace with the desired values):
+
+```yaml
+replicaCount: 2
+ingress:
+  hosts:
+    - host: pkg.guimauve.digital
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: guimauve-tls
+      hosts:
+        - pkg.guimauve.digital
+jwt:
+  secret: 'secret'
+s3:
+  id: ''
+  key: ''
+  region: 'eu-west-3'
+  name: 'guimauve-pkg'
+```
+
+And then, install it:
+
+```bash
+helm install pkg path-to-repo/helm/pkg -f values.yaml
+```
+
+And you can access it with the chosen domain!
