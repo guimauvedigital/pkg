@@ -50,7 +50,7 @@ import digital.guimauve.pkg.models.packages.versions.files.PackageVersionFile
 import digital.guimauve.pkg.models.users.CreateUserPayload
 import digital.guimauve.pkg.models.users.User
 import digital.guimauve.pkg.services.storage.IStorageService
-import digital.guimauve.pkg.services.storage.LocalStorageService
+import digital.guimauve.pkg.services.storage.ProxyStorageService
 import digital.guimauve.pkg.services.tokens.IJWTService
 import digital.guimauve.pkg.services.tokens.ITokensService
 import digital.guimauve.pkg.services.tokens.JWTService
@@ -95,7 +95,7 @@ fun Application.configureKoin() {
                 TokensService(get())
             }
             single<IStorageService> {
-                LocalStorageService() // TODO: Proxy to local/s3 depending on env
+                ProxyStorageService(environment.config)
             }
         }
         val repositoryModule = module {
