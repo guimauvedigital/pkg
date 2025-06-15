@@ -3,6 +3,7 @@ package digital.guimauve.pkg.plugins
 import dev.kaccelero.routers.createRoutes
 import dev.kaccelero.routers.info
 import digital.guimauve.pkg.controllers.organizations.OrganizationsRouter
+import digital.guimauve.pkg.controllers.packages.PackagesRouter
 import digital.guimauve.pkg.controllers.packages.maven.MavenRouter
 import digital.guimauve.pkg.controllers.packages.npm.NpmRouter
 import digital.guimauve.pkg.controllers.packages.pypi.PyPiRouter
@@ -45,6 +46,7 @@ fun Application.configureRouting() {
             listOf(
                 get<OrganizationsRouter>(),
                 get<UsersRouter>(),
+                get<PackagesRouter>(),
             ).forEach {
                 it.createRoutes(this) //, openAPI)
             }

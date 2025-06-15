@@ -20,4 +20,3 @@ class UsersRouter(
     organizationsRouter,
     prefix = "/api/v1"
 )
-

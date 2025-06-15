@@ -6,6 +6,8 @@ import dev.kaccelero.commons.localization.IGetLocaleForCallUseCase
 import dev.kaccelero.commons.localization.ITranslateUseCase
 import dev.kaccelero.commons.localization.TranslateFromPropertiesUseCase
 import dev.kaccelero.commons.repositories.*
+import dev.kaccelero.commons.sessions.ISessionsRepository
+import dev.kaccelero.commons.sessions.SessionsDatabaseRepository
 import dev.kaccelero.commons.users.IGetUserForCallUseCase
 import dev.kaccelero.commons.users.IRequireUserForCallUseCase
 import dev.kaccelero.commons.users.RequireUserForCallUseCase
@@ -14,6 +16,9 @@ import dev.kaccelero.models.UUID
 import digital.guimauve.pkg.controllers.organizations.IOrganizationsController
 import digital.guimauve.pkg.controllers.organizations.OrganizationsController
 import digital.guimauve.pkg.controllers.organizations.OrganizationsRouter
+import digital.guimauve.pkg.controllers.packages.IPackagesController
+import digital.guimauve.pkg.controllers.packages.PackagesController
+import digital.guimauve.pkg.controllers.packages.PackagesRouter
 import digital.guimauve.pkg.controllers.packages.maven.IMavenController
 import digital.guimauve.pkg.controllers.packages.maven.MavenController
 import digital.guimauve.pkg.controllers.packages.maven.MavenRouter
@@ -39,6 +44,7 @@ import digital.guimauve.pkg.database.users.IUsersRepository
 import digital.guimauve.pkg.database.users.UsersDatabaseRepository
 import digital.guimauve.pkg.models.organizations.CreateOrganizationPayload
 import digital.guimauve.pkg.models.organizations.Organization
+import digital.guimauve.pkg.models.packages.Package
 import digital.guimauve.pkg.models.packages.versions.files.CreatePackageVersionFilePayload
 import digital.guimauve.pkg.models.packages.versions.files.PackageVersionFile
 import digital.guimauve.pkg.models.users.CreateUserPayload
@@ -93,6 +99,7 @@ fun Application.configureKoin() {
             }
         }
         val repositoryModule = module {
+            single<ISessionsRepository> { SessionsDatabaseRepository(get()) }
             single<IOrganizationsRepository> { OrganizationDatabaseRepository(get()) }
             single<IUsersRepository> { UsersDatabaseRepository(get()) }
             single<IPackagesRepository> { PackagesDatabaseRepository(get()) }
@@ -154,6 +161,9 @@ fun Application.configureKoin() {
             ) {
                 CreatePackageVersionFileUseCase(get(), get())
             }
+            single<IListChildModelSuspendUseCase<Package, UUID>>(named<Package>()) {
+                ListChildModelFromRepositorySuspendUseCase(get<IPackagesRepository>())
+            }
             single<IDownloadFileUseCase> { DownloadFileUseCase(get()) }
 
             // Maven
@@ -170,6 +180,11 @@ fun Application.configureKoin() {
             single<IUsersController> {
                 UsersController(
                     get(named<User>())
+                )
+            }
+            single<IPackagesController> {
+                PackagesController(
+                    get(named<Package>()),
                 )
             }
             single<IMavenController> {
@@ -209,6 +224,7 @@ fun Application.configureKoin() {
         val routerModule = module {
             single { OrganizationsRouter(get()) }
             single { UsersRouter(get(), get()) }
+            single { PackagesRouter(get(), get()) }
             single { MavenRouter(get()) }
             single { NpmRouter(get()) }
             single { PyPiRouter(get()) }
