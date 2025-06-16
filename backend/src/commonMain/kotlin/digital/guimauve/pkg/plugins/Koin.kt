@@ -13,6 +13,9 @@ import dev.kaccelero.commons.users.IRequireUserForCallUseCase
 import dev.kaccelero.commons.users.RequireUserForCallUseCase
 import dev.kaccelero.database.IDatabase
 import dev.kaccelero.models.UUID
+import digital.guimauve.pkg.controllers.auth.AuthController
+import digital.guimauve.pkg.controllers.auth.AuthRouter
+import digital.guimauve.pkg.controllers.auth.IAuthController
 import digital.guimauve.pkg.controllers.organizations.IOrganizationsController
 import digital.guimauve.pkg.controllers.organizations.OrganizationsController
 import digital.guimauve.pkg.controllers.organizations.OrganizationsRouter
@@ -170,6 +173,7 @@ fun Application.configureKoin() {
             single<IParseMavenPathUseCase> { ParseMavenPathUseCase() }
         }
         val controllerModule = module {
+            single<IAuthController> { AuthController() }
             single<IOrganizationsController> {
                 OrganizationsController(
                     get(),
@@ -222,6 +226,7 @@ fun Application.configureKoin() {
             }
         }
         val routerModule = module {
+            single { AuthRouter(get(), get()) }
             single { OrganizationsRouter(get()) }
             single { UsersRouter(get(), get()) }
             single { PackagesRouter(get(), get()) }
