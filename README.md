@@ -20,49 +20,16 @@ love to make open source software, we decided to create our own package manager!
 
 ### Gradle
 
-To download packages:
-
-```kotlin
-repositories {
-    maven {
-        url = uri("https://pkg.guimauve.digital/maven2") // Replace with your repository URL
-        credentials {
-            username = findProperty("pkgUsername") as String?
-            password = findProperty("pkgPassword") as String?
-        }
-    }
-}
-```
-
-To publish packages:
-
-```kotlin
-// With com.vanniktech.maven.publish plugin
-mavenPublishing {
-    publishing {
-        repositories {
-            maven {
-                name = "pkg" // Replace with your repository name
-                url = uri("https://pkg.guimauve.digital/maven2") // Replace with your repository URL
-                credentials {
-                    username = findProperty("pkgUsername") as String?
-                    password = findProperty("pkgPassword") as String?
-                }
-            }
-        }
-    }
-}
-```
-
-Or using the gradle plugin:
+Using the Gradle plugin:
 
 ```kotlin
 plugins {
-    id("digital.guimauve.pkg") version "0.1.0"
+    id("digital.guimauve.pkg") version "0.1.1"
 }
 
 repositories {
-    pkg(project)
+    pkg(project) // Default https://pkg.guimauve.digital/maven2 repository
+    pkg(project, url = "...") // Custom repository URL
 }
 ```
 

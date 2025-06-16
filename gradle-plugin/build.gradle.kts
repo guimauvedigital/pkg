@@ -15,7 +15,7 @@ kotlin {
 }
 
 group = "digital.guimauve.pkg"
-version = "0.1.0"
+version = "0.1.1"
 
 gradlePlugin {
     website = "https://github.com/guimauvedigital/pkg"
