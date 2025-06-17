@@ -1,5 +1,6 @@
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.authentication.http.BasicAuthentication
 
 fun RepositoryHandler.pkg(
     project: Project,
@@ -17,5 +18,8 @@ fun RepositoryHandler.pkg(
         this.password = password
             ?: project.findProperty("pkgPassword") as String?
                     ?: System.getenv("PKG_PASSWORD")
+    }
+    authentication {
+        create<BasicAuthentication>("basic") // required to always send credentials
     }
 }
