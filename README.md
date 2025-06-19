@@ -24,7 +24,7 @@ Using the Gradle plugin:
 
 ```kotlin
 plugins {
-    id("digital.guimauve.pkg") version "0.1.2"
+    id("digital.guimauve.pkg") version "0.1.3"
 }
 
 repositories {
