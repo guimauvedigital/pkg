@@ -58,6 +58,7 @@ dependencyResolutionManagement {
             library("ktor-server-call-logging", "io.ktor", "ktor-server-call-logging").versionRef("ktor")
             library("ktor-server-status-pages", "io.ktor", "ktor-server-status-pages").versionRef("ktor")
             library("ktor-server-content-negotiation", "io.ktor", "ktor-server-content-negotiation").versionRef("ktor")
+            library("ktor-server-auto-head-response", "io.ktor", "ktor-server-auto-head-response").versionRef("ktor")
             library("ktor-server-sessions", "io.ktor", "ktor-server-sessions").versionRef("ktor")
             library("ktor-server-auth-jwt", "io.ktor", "ktor-server-auth-jwt").versionRef("ktor")
             library("ktor-server-freemarker", "io.ktor", "ktor-server-freemarker").versionRef("ktor")
@@ -77,6 +78,7 @@ dependencyResolutionManagement {
                     "ktor-server-call-logging",
                     "ktor-server-status-pages",
                     "ktor-server-content-negotiation",
+                    "ktor-server-auto-head-response",
                     "ktor-server-sessions",
                     "ktor-server-auth-jwt",
                     "ktor-server-freemarker",
