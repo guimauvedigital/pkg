@@ -13,9 +13,10 @@ import dev.kaccelero.commons.users.IRequireUserForCallUseCase
 import dev.kaccelero.commons.users.RequireUserForCallUseCase
 import dev.kaccelero.database.IDatabase
 import dev.kaccelero.models.UUID
-import digital.guimauve.pkg.controllers.organizations.IOrganizationsController
-import digital.guimauve.pkg.controllers.organizations.OrganizationsController
-import digital.guimauve.pkg.controllers.organizations.OrganizationsRouter
+import digital.guimauve.pkg.controllers.auth.AuthController
+import digital.guimauve.pkg.controllers.auth.AuthRouter
+import digital.guimauve.pkg.controllers.auth.IAuthController
+import digital.guimauve.pkg.controllers.organizations.*
 import digital.guimauve.pkg.controllers.packages.IPackagesController
 import digital.guimauve.pkg.controllers.packages.PackagesController
 import digital.guimauve.pkg.controllers.packages.PackagesRouter
@@ -56,6 +57,8 @@ import digital.guimauve.pkg.services.tokens.ITokensService
 import digital.guimauve.pkg.services.tokens.JWTService
 import digital.guimauve.pkg.services.tokens.TokensService
 import digital.guimauve.pkg.usecases.auth.*
+import digital.guimauve.pkg.usecases.organizations.IRequireOrganizationForCallUseCase
+import digital.guimauve.pkg.usecases.organizations.RequireOrganizationForCallUseCase
 import digital.guimauve.pkg.usecases.packages.GetOrCreatePackageUseCase
 import digital.guimauve.pkg.usecases.packages.GetPackageByNameUseCase
 import digital.guimauve.pkg.usecases.packages.IGetOrCreatePackageUseCase
@@ -122,6 +125,7 @@ fun Application.configureKoin() {
             single<ILoginUseCase> { LoginUseCase(get(), get()) }
 
             // Organizations
+            single<IRequireOrganizationForCallUseCase> { RequireOrganizationForCallUseCase(get(), get()) }
             single<IListModelSuspendUseCase<Organization>>(named<Organization>()) {
                 ListModelFromRepositorySuspendUseCase(get<IOrganizationsRepository>())
             }
@@ -170,6 +174,7 @@ fun Application.configureKoin() {
             single<IParseMavenPathUseCase> { ParseMavenPathUseCase() }
         }
         val controllerModule = module {
+            single<IAuthController> { AuthController(get(), get(), get()) }
             single<IOrganizationsController> {
                 OrganizationsController(
                     get(),
@@ -222,9 +227,11 @@ fun Application.configureKoin() {
             }
         }
         val routerModule = module {
+            single<IOrganizationForCallRouter> { OrganizationForCallRouter(get(), get()) }
+            single { AuthRouter(get(), get()) }
             single { OrganizationsRouter(get()) }
             single { UsersRouter(get(), get()) }
-            single { PackagesRouter(get(), get()) }
+            single { PackagesRouter(get(), get(), get(), get(), get()) }
             single { MavenRouter(get()) }
             single { NpmRouter(get()) }
             single { PyPiRouter(get()) }

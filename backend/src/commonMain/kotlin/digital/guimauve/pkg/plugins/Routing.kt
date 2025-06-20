@@ -2,6 +2,7 @@ package digital.guimauve.pkg.plugins
 
 import dev.kaccelero.routers.createRoutes
 import dev.kaccelero.routers.info
+import digital.guimauve.pkg.controllers.auth.AuthRouter
 import digital.guimauve.pkg.controllers.organizations.OrganizationsRouter
 import digital.guimauve.pkg.controllers.packages.PackagesRouter
 import digital.guimauve.pkg.controllers.packages.maven.MavenRouter
@@ -46,6 +47,7 @@ fun Application.configureRouting() {
 
         authenticate("api-jwt", optional = true) {
             listOf(
+                get<AuthRouter>(),
                 get<OrganizationsRouter>(),
                 get<UsersRouter>(),
                 get<PackagesRouter>(),
