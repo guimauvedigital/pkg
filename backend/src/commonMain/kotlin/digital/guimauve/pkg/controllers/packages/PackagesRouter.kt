@@ -1,7 +1,12 @@
 package digital.guimauve.pkg.controllers.packages
 
+import dev.kaccelero.commons.localization.IGetLocaleForCallUseCase
+import dev.kaccelero.commons.users.IGetUserForCallUseCase
 import dev.kaccelero.models.UUID
 import dev.kaccelero.routers.APIChildModelRouter
+import dev.kaccelero.routers.ConcatChildModelRouter
+import digital.guimauve.pkg.controllers.models.PublicChildModelRouter
+import digital.guimauve.pkg.controllers.organizations.IOrganizationForCallRouter
 import digital.guimauve.pkg.controllers.organizations.OrganizationsRouter
 import digital.guimauve.pkg.models.organizations.Organization
 import digital.guimauve.pkg.models.packages.CreatePackagePayload
@@ -11,13 +16,28 @@ import io.ktor.util.reflect.*
 
 class PackagesRouter(
     controller: IPackagesController,
+    getUserForCallUseCase: IGetUserForCallUseCase,
+    getLocaleForCallUseCase: IGetLocaleForCallUseCase,
+    organizationForCallRouter: IOrganizationForCallRouter,
     organizationsRouter: OrganizationsRouter,
-) : APIChildModelRouter<Package, UUID, CreatePackagePayload, UpdatePackagePayload, Organization, UUID>(
-    typeInfo<Package>(),
-    typeInfo<CreatePackagePayload>(),
-    typeInfo<UpdatePackagePayload>(),
-    controller,
-    IPackagesController::class,
-    organizationsRouter,
-    prefix = "/api/v1"
+) : ConcatChildModelRouter<Package, UUID, CreatePackagePayload, UpdatePackagePayload, Organization, UUID>(
+    APIChildModelRouter(
+        typeInfo<Package>(),
+        typeInfo<CreatePackagePayload>(),
+        typeInfo<UpdatePackagePayload>(),
+        controller,
+        IPackagesController::class,
+        organizationsRouter,
+        prefix = "/api/v1"
+    ),
+    PublicChildModelRouter(
+        typeInfo<Package>(),
+        typeInfo<CreatePackagePayload>(),
+        typeInfo<UpdatePackagePayload>(),
+        controller,
+        IPackagesController::class,
+        organizationForCallRouter,
+        getUserForCallUseCase,
+        getLocaleForCallUseCase,
+    )
 )
