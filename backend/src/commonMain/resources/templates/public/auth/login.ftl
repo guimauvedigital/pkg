@@ -3,7 +3,10 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <h2><@t key="auth_login_title" /></h2>
-            <form method="post" action="/login">
+            <#if error??>
+                <div id="alert-error" class="alert alert-danger" role="alert"><@t key=error /></div>
+            </#if>
+            <form method="post">
                 <div class="mb-3">
                     <label for="email" class="form-label"><@t key="auth_field_email" /></label>
                     <input type="email" class="form-control" id="email" name="email" required>

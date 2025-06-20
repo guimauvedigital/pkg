@@ -173,7 +173,7 @@ fun Application.configureKoin() {
             single<IParseMavenPathUseCase> { ParseMavenPathUseCase() }
         }
         val controllerModule = module {
-            single<IAuthController> { AuthController() }
+            single<IAuthController> { AuthController(get(), get(), get()) }
             single<IOrganizationsController> {
                 OrganizationsController(
                     get(),
