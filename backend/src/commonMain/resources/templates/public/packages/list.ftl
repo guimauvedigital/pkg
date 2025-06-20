@@ -1,6 +1,7 @@
 <#import "../template.ftl" as template>
+<#import "../../components/packages/card.ftl" as card>
 <@template.page>
     <#list items as package>
-        ${package.name}<br/>
+        <@card.card package />
     </#list>
 </@template.page>
