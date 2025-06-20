@@ -14,6 +14,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.http.content.*
+import io.ktor.server.plugins.autohead.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
 import io.swagger.v3.oas.models.OpenAPI
@@ -22,6 +23,7 @@ import org.koin.ktor.ext.get
 
 fun Application.configureRouting() {
     install(IgnoreTrailingSlash)
+    install(AutoHeadResponse)
     install(CORS) {
         allowMethod(HttpMethod.Options)
         allowMethod(HttpMethod.Put)

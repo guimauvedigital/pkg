@@ -5,7 +5,7 @@ plugins {
 
 allprojects {
     group = "digital.guimauve.pkg"
-    version = "0.1.2"
+    version = "0.1.3"
 
     repositories {
         mavenCentral()
