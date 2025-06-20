@@ -15,6 +15,7 @@ ktor {
     docker {
         jreVersion.set(JavaVersion.VERSION_21)
         localImageName.set("pkg")
+        findProperty("imageTag")?.let { imageTag.set(it.toString()) }
 
         externalRegistry.set(
             io.ktor.plugin.features.DockerImageRegistry.dockerHub(
