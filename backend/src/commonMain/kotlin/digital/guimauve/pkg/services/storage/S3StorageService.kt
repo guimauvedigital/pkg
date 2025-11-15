@@ -45,6 +45,10 @@ class S3StorageService(
     override fun uploadStream(file: FileContext, path: String): String? = S3Client.builder()
         .region(getRegion())
         .credentialsProvider(getCredentials())
+        .overrideConfiguration { config ->
+            config.apiCallTimeout(Duration.ofMinutes(30))
+            config.apiCallAttemptTimeout(Duration.ofMinutes(30))
+        }
         .build()
         .use { s3 ->
             val request = PutObjectRequest.builder()
