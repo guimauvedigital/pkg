@@ -19,10 +19,10 @@ dependencyResolutionManagement {
             plugin("kover", "org.jetbrains.kotlinx.kover").version("0.8.3")
             plugin("ksp", "com.google.devtools.ksp").version("2.1.10-1.0.30")
             plugin("maven", "com.vanniktech.maven.publish").version("0.30.0")
-            plugin("zodable", "digital.guimauve.zodable").version("1.6.1-ksp1")
+            plugin("zodable", "digital.guimauve.zodable").version("1.6.2-ksp1")
 
             // Kaccelero
-            version("kaccelero", "0.6.1")
+            version("kaccelero", "0.6.9")
             library("kaccelero-routers-client", "dev.kaccelero", "routers-client-ktor").versionRef("kaccelero")
             library("kaccelero-routers", "dev.kaccelero", "routers-ktor").versionRef("kaccelero")
             library("kaccelero-i18n-freemarker", "dev.kaccelero", "i18n-ktor-freemarker").versionRef("kaccelero")
