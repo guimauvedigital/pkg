@@ -22,7 +22,7 @@ dependencyResolutionManagement {
             plugin("zodable", "digital.guimauve.zodable").version("1.6.2-ksp1")
 
             // Kaccelero
-            version("kaccelero", "0.6.9")
+            version("kaccelero", "0.6.10")
             library("kaccelero-routers-client", "dev.kaccelero", "routers-client-ktor").versionRef("kaccelero")
             library("kaccelero-routers", "dev.kaccelero", "routers-ktor").versionRef("kaccelero")
             library("kaccelero-i18n-freemarker", "dev.kaccelero", "i18n-ktor-freemarker").versionRef("kaccelero")

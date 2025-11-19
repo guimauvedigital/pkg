@@ -29,6 +29,9 @@ import digital.guimauve.pkg.controllers.packages.npm.NpmRouter
 import digital.guimauve.pkg.controllers.packages.pypi.IPyPiController
 import digital.guimauve.pkg.controllers.packages.pypi.PyPiController
 import digital.guimauve.pkg.controllers.packages.pypi.PyPiRouter
+import digital.guimauve.pkg.controllers.packages.versions.IPackageVersionsController
+import digital.guimauve.pkg.controllers.packages.versions.PackageVersionsController
+import digital.guimauve.pkg.controllers.packages.versions.PackageVersionsRouter
 import digital.guimauve.pkg.controllers.users.IUsersController
 import digital.guimauve.pkg.controllers.users.UsersController
 import digital.guimauve.pkg.controllers.users.UsersRouter
@@ -46,6 +49,7 @@ import digital.guimauve.pkg.database.users.UsersDatabaseRepository
 import digital.guimauve.pkg.models.organizations.CreateOrganizationPayload
 import digital.guimauve.pkg.models.organizations.Organization
 import digital.guimauve.pkg.models.packages.Package
+import digital.guimauve.pkg.models.packages.versions.PackageVersion
 import digital.guimauve.pkg.models.packages.versions.files.CreatePackageVersionFilePayload
 import digital.guimauve.pkg.models.packages.versions.files.PackageVersionFile
 import digital.guimauve.pkg.models.users.CreateUserPayload
@@ -168,6 +172,18 @@ fun Application.configureKoin() {
             single<IListChildModelSuspendUseCase<Package, UUID>>(named<Package>()) {
                 ListChildModelFromRepositorySuspendUseCase(get<IPackagesRepository>())
             }
+            single<IGetChildModelSuspendUseCase<Package, UUID, UUID>>(named<Package>()) {
+                GetChildModelFromRepositorySuspendUseCase(get<IPackagesRepository>())
+            }
+            single<IListChildModelSuspendUseCase<PackageVersion, UUID>>(named<PackageVersion>()) {
+                ListChildModelFromRepositorySuspendUseCase(get<IPackageVersionsRepository>())
+            }
+            single<IGetChildModelSuspendUseCase<PackageVersion, UUID, UUID>>(named<PackageVersion>()) {
+                GetChildModelFromRepositorySuspendUseCase(get<IPackageVersionsRepository>())
+            }
+            single<IListChildModelSuspendUseCase<PackageVersionFile, UUID>>(named<PackageVersionFile>()) {
+                ListChildModelFromRepositorySuspendUseCase(get<IPackageVersionFilesRepository>())
+            }
             single<IDownloadFileUseCase> { DownloadFileUseCase(get()) }
 
             // Maven
@@ -184,12 +200,21 @@ fun Application.configureKoin() {
             }
             single<IUsersController> {
                 UsersController(
+                    get(named<User>()),
                     get(named<User>())
                 )
             }
             single<IPackagesController> {
                 PackagesController(
                     get(named<Package>()),
+                    get(named<Package>()),
+                    get(named<PackageVersion>()),
+                )
+            }
+            single<IPackageVersionsController> {
+                PackageVersionsController(
+                    get(named<PackageVersion>()),
+                    get(named<PackageVersionFile>()),
                 )
             }
             single<IMavenController> {
@@ -230,8 +255,9 @@ fun Application.configureKoin() {
             single<IOrganizationForCallRouter> { OrganizationForCallRouter(get(), get()) }
             single { AuthRouter(get(), get()) }
             single { OrganizationsRouter(get()) }
-            single { UsersRouter(get(), get()) }
+            single { UsersRouter(get(), get(), get(), get(), get()) }
             single { PackagesRouter(get(), get(), get(), get(), get()) }
+            single { PackageVersionsRouter(get(), get(), get(), get()) }
             single { MavenRouter(get()) }
             single { NpmRouter(get()) }
             single { PyPiRouter(get()) }
