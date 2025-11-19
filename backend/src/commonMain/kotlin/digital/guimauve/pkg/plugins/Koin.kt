@@ -200,6 +200,7 @@ fun Application.configureKoin() {
             }
             single<IUsersController> {
                 UsersController(
+                    get(named<User>()),
                     get(named<User>())
                 )
             }
@@ -254,7 +255,7 @@ fun Application.configureKoin() {
             single<IOrganizationForCallRouter> { OrganizationForCallRouter(get(), get()) }
             single { AuthRouter(get(), get()) }
             single { OrganizationsRouter(get()) }
-            single { UsersRouter(get(), get()) }
+            single { UsersRouter(get(), get(), get(), get(), get()) }
             single { PackagesRouter(get(), get(), get(), get(), get()) }
             single { PackageVersionsRouter(get(), get(), get(), get()) }
             single { MavenRouter(get()) }

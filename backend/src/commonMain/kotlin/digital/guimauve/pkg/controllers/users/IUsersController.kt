@@ -1,8 +1,6 @@
 package digital.guimauve.pkg.controllers.users
 
-import dev.kaccelero.annotations.APIMapping
-import dev.kaccelero.annotations.ListModelPath
-import dev.kaccelero.annotations.ParentModel
+import dev.kaccelero.annotations.*
 import dev.kaccelero.controllers.IChildModelController
 import dev.kaccelero.models.UUID
 import digital.guimauve.pkg.models.organizations.Organization
@@ -13,7 +11,14 @@ import io.ktor.server.application.*
 interface IUsersController : IChildModelController<User, UUID, CreateUserPayload, Unit, Organization, UUID> {
 
     @APIMapping
+    @TemplateMapping("public/users/list.ftl")
     @ListModelPath
     suspend fun list(call: ApplicationCall, @ParentModel parent: Organization): List<User>
+
+    @APIMapping
+    @TemplateMapping("public/users/detail.ftl")
+    @GetModelPath
+    @DocumentedError(404, "users_not_found")
+    suspend fun get(call: ApplicationCall, @ParentModel parent: Organization, @Id id: UUID): Map<String, Any>
 
 }
