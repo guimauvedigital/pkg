@@ -57,6 +57,10 @@
                                     <p class="mb-0 text-muted small">${version.metadata}</p>
                                 </#if>
                             </div>
+                            <div>
+                                <a href="/packages/${item.id}/versions/${version.id}"
+                                   class="btn btn-sm btn-outline-primary">Details</a>
+                            </div>
                         </div>
                     </div>
                 </#list>

@@ -29,6 +29,9 @@ import digital.guimauve.pkg.controllers.packages.npm.NpmRouter
 import digital.guimauve.pkg.controllers.packages.pypi.IPyPiController
 import digital.guimauve.pkg.controllers.packages.pypi.PyPiController
 import digital.guimauve.pkg.controllers.packages.pypi.PyPiRouter
+import digital.guimauve.pkg.controllers.packages.versions.IPackageVersionsController
+import digital.guimauve.pkg.controllers.packages.versions.PackageVersionsController
+import digital.guimauve.pkg.controllers.packages.versions.PackageVersionsRouter
 import digital.guimauve.pkg.controllers.users.IUsersController
 import digital.guimauve.pkg.controllers.users.UsersController
 import digital.guimauve.pkg.controllers.users.UsersRouter
@@ -175,6 +178,12 @@ fun Application.configureKoin() {
             single<IListChildModelSuspendUseCase<PackageVersion, UUID>>(named<PackageVersion>()) {
                 ListChildModelFromRepositorySuspendUseCase(get<IPackageVersionsRepository>())
             }
+            single<IGetChildModelSuspendUseCase<PackageVersion, UUID, UUID>>(named<PackageVersion>()) {
+                GetChildModelFromRepositorySuspendUseCase(get<IPackageVersionsRepository>())
+            }
+            single<IListChildModelSuspendUseCase<PackageVersionFile, UUID>>(named<PackageVersionFile>()) {
+                ListChildModelFromRepositorySuspendUseCase(get<IPackageVersionFilesRepository>())
+            }
             single<IDownloadFileUseCase> { DownloadFileUseCase(get()) }
 
             // Maven
@@ -199,6 +208,12 @@ fun Application.configureKoin() {
                     get(named<Package>()),
                     get(named<Package>()),
                     get(named<PackageVersion>()),
+                )
+            }
+            single<IPackageVersionsController> {
+                PackageVersionsController(
+                    get(named<PackageVersion>()),
+                    get(named<PackageVersionFile>()),
                 )
             }
             single<IMavenController> {
@@ -241,6 +256,7 @@ fun Application.configureKoin() {
             single { OrganizationsRouter(get()) }
             single { UsersRouter(get(), get()) }
             single { PackagesRouter(get(), get(), get(), get(), get()) }
+            single { PackageVersionsRouter(get(), get(), get(), get()) }
             single { MavenRouter(get()) }
             single { NpmRouter(get()) }
             single { PyPiRouter(get()) }

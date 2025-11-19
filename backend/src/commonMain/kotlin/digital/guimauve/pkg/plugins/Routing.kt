@@ -8,6 +8,7 @@ import digital.guimauve.pkg.controllers.packages.PackagesRouter
 import digital.guimauve.pkg.controllers.packages.maven.MavenRouter
 import digital.guimauve.pkg.controllers.packages.npm.NpmRouter
 import digital.guimauve.pkg.controllers.packages.pypi.PyPiRouter
+import digital.guimauve.pkg.controllers.packages.versions.PackageVersionsRouter
 import digital.guimauve.pkg.controllers.users.UsersRouter
 import digital.guimauve.pkg.models.application.PkgEnvironment
 import io.ktor.http.*
@@ -51,6 +52,7 @@ fun Application.configureRouting() {
                 get<OrganizationsRouter>(),
                 get<UsersRouter>(),
                 get<PackagesRouter>(),
+                get<PackageVersionsRouter>(),
             ).forEach {
                 it.createRoutes(this) //, openAPI)
             }
