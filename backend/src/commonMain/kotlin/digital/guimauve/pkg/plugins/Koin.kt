@@ -46,6 +46,7 @@ import digital.guimauve.pkg.database.users.UsersDatabaseRepository
 import digital.guimauve.pkg.models.organizations.CreateOrganizationPayload
 import digital.guimauve.pkg.models.organizations.Organization
 import digital.guimauve.pkg.models.packages.Package
+import digital.guimauve.pkg.models.packages.versions.PackageVersion
 import digital.guimauve.pkg.models.packages.versions.files.CreatePackageVersionFilePayload
 import digital.guimauve.pkg.models.packages.versions.files.PackageVersionFile
 import digital.guimauve.pkg.models.users.CreateUserPayload
@@ -168,6 +169,12 @@ fun Application.configureKoin() {
             single<IListChildModelSuspendUseCase<Package, UUID>>(named<Package>()) {
                 ListChildModelFromRepositorySuspendUseCase(get<IPackagesRepository>())
             }
+            single<IGetChildModelSuspendUseCase<Package, UUID, UUID>>(named<Package>()) {
+                GetChildModelFromRepositorySuspendUseCase(get<IPackagesRepository>())
+            }
+            single<IListChildModelSuspendUseCase<PackageVersion, UUID>>(named<PackageVersion>()) {
+                ListChildModelFromRepositorySuspendUseCase(get<IPackageVersionsRepository>())
+            }
             single<IDownloadFileUseCase> { DownloadFileUseCase(get()) }
 
             // Maven
@@ -190,6 +197,8 @@ fun Application.configureKoin() {
             single<IPackagesController> {
                 PackagesController(
                     get(named<Package>()),
+                    get(named<Package>()),
+                    get(named<PackageVersion>()),
                 )
             }
             single<IMavenController> {

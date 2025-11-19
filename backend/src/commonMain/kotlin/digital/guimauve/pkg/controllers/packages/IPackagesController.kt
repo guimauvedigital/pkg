@@ -1,9 +1,6 @@
 package digital.guimauve.pkg.controllers.packages
 
-import dev.kaccelero.annotations.APIMapping
-import dev.kaccelero.annotations.ListModelPath
-import dev.kaccelero.annotations.ParentModel
-import dev.kaccelero.annotations.TemplateMapping
+import dev.kaccelero.annotations.*
 import dev.kaccelero.controllers.IChildModelController
 import dev.kaccelero.models.UUID
 import digital.guimauve.pkg.models.organizations.Organization
@@ -19,5 +16,11 @@ interface IPackagesController :
     @TemplateMapping("public/packages/list.ftl")
     @ListModelPath
     suspend fun list(call: ApplicationCall, @ParentModel parent: Organization): List<Package>
+
+    @APIMapping
+    @TemplateMapping("public/packages/detail.ftl")
+    @GetModelPath
+    @DocumentedError(404, "packages_not_found")
+    suspend fun get(call: ApplicationCall, @ParentModel parent: Organization, @Id id: UUID): Map<String, Any>
 
 }
